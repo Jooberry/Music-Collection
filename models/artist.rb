@@ -4,7 +4,7 @@ require_relative('album')
 
 class Artist
 
-  attr_reader :id, :name
+  attr_accessor :id, :name
   
   def initialize(options)
     @id = options['artist_id'].to_i
@@ -14,7 +14,15 @@ class Artist
   def save()
     sql = "INSERT INTO artists (name)
     VALUES ('#{name}') RETURNING *"
-    @id = SqlRunner.run(sql).first()['artist_id'].to_i
+    @id = SqlRunner.run(sql).first()['id'].to_i
+
+  end
+
+  def update()
+    sql = "UPDATE artists
+      SET name = '#{@name}'
+      WHERE id = #{@id}"
+    SqlRunner.run(sql)
   end
 
   def self.all()
@@ -30,8 +38,9 @@ class Artist
   end
 
   def albums()
-    sql = "SELECT * FROM albums WHERE artist_id = #{id}"
+    sql = "SELECT * FROM albums WHERE artist_id = #{@id}"
     result = SqlRunner.run(sql)
+    # (The runner gets back an array of hashes)
     return result.map{|album| Album.new(album)}
   end
 

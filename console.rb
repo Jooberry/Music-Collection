@@ -45,6 +45,6 @@ album5 = Album.new({
   'genre' => 'garage'
   })
 album5.save()
-
 binding.pry
+
  nil 

@@ -38,8 +38,8 @@ class Album
         genre,
         artist_id) = ( 
         '#{@title}', 
-        #{@genre}),
-        #{@artist_id}
+        '#{@genre}',
+        #{@artist_id})
         WHERE id = #{@id}"
       SqlRunner.run(sql)
     end
